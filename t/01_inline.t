@@ -1,29 +1,56 @@
-# Before `make install' is performed this script should be runnable with
-# `make test'. After `make install' it should work as `perl test.pl'
+#!/usr/local/bin/perl -w
 
-######################### We start with some black magic to print on failure.
+use Test::More 'no_plan';
 
-use Sys::Hostname;
-use Socket;
+package Catch;
 
-# Change 1..1 below to 1..last_test_to_print .
-# (It may become useful if the test is moved to ./t subdirectory.)
+sub TIEHANDLE {
+    my($class, $var) = @_;
+    return bless { var => $var }, $class;
+}
 
-BEGIN { $| = 1; print "1..3\n"; }
-END {print "not ok 1\n" unless $loaded;}
-use Authen::Libwrap qw( hosts_ctl STRING_UNKNOWN );
-$loaded = 1;
-print "ok 1\n";
+sub PRINT  {
+    my($self) = shift;
+    ${'main::'.$self->{var}} .= join '', @_;
+}
 
-######################### End of black magic.
+sub OPEN  {}    # XXX Hackery in case the user redirects
+sub CLOSE {}    # XXX STDERR/STDOUT.  This is not the behavior we want.
 
-$daemon = "tcp_wrappers_test";
-$hostname = "localhost";
-$hostaddr = "127.0.0.1";
-$username = STRING_UNKNOWN;
+sub READ {}
+sub READLINE {}
+sub GETC {}
 
-$result = hosts_ctl( $daemon, $hostname, $hostaddr, $username );
-print "ok 2\n";
+my $Original_File = 'lib/Authen/Libwrap.pm';
 
-$Authen::Libwrap::DEBUG = 1;
-print "ok 3\n";
+package main;
+
+# pre-5.8.0's warns aren't caught by a tied STDERR.
+$SIG{__WARN__} = sub { $main::_STDERR_ .= join '', @_; };
+tie *STDOUT, 'Catch', '_STDOUT_' or die $!;
+tie *STDERR, 'Catch', '_STDERR_' or die $!;
+
+{
+    undef $main::_STDOUT_;
+    undef $main::_STDERR_;
+#line 91 lib/Authen/Libwrap.pm
+
+use_ok('Authen::Libwrap');
+Authen::Libwrap->import( qw|hosts_ctl STRING_UNKNOWN| );
+ok( defined(&hosts_ctl), "'hosts_ctl' function is exported");
+Authen::Libwrap::STRING_UNKNOWN();        # to make AUTOLOAD generate it
+ok( defined(&STRING_UNKNOWN), "'STRING_UNKNOWN' constant is exported");
+
+my $daemon = "tcp_wrappers_test";
+my $hostname = "localhost";
+my $hostaddr = "127.0.0.1";
+my $username = STRING_UNKNOWN();
+
+my $result = hosts_ctl( $daemon, $hostname, $hostaddr, $username );
+is( $result, 1, 'access is granted');
+
+
+    undef $main::_STDOUT_;
+    undef $main::_STDERR_;
+}
+
