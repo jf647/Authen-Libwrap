@@ -1,5 +1,5 @@
 #
-# $Id: Build.PL,v 1.1 2003/12/17 01:41:02 james Exp $
+# $Id: Build.PL,v 1.2 2003/12/17 02:04:13 james Exp $
 #
 
 use strict;
@@ -72,12 +72,17 @@ Module::Build->new(
 
     module_name          => 'Authen::Libwrap',
 
-    dist_version         => '0.11',
+    dist_version         => '0.20',
 
     license              => 'perl',
     
+    requires             => {
+        'Scalar::Util'    => 0,
+    },
+    
     build_requires       => {
-        'Test::More' => 0,
+        'Test::More'      => 0,
+        'Test::Exception' => 0,
     },
 
     create_makefile_pl   => 'passthrough',
