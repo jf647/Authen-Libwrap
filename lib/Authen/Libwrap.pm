@@ -1,58 +1,3 @@
-package Authen::Libwrap;
-
-use strict;
-use vars qw($VERSION @ISA @EXPORT @EXPORT_OK $AUTOLOAD $DEBUG);
-
-use XSLoader;
-require Exporter;
-require AutoLoader;
-
-use Carp;
-
-@ISA = qw|Exporter AutoLoader|;
-
-@EXPORT_OK = qw(
-	hosts_ctl
-	STRING_UNKNOWN
-);
-
-$VERSION = 0.11;
-
-XSLoader::load 'Authen::Libwrap', $VERSION;
-
-sub AUTOLOAD {
-
-    my( $constname, $val );
-    ($constname = $AUTOLOAD) =~ s/.*:://;
-    $val = constant_NV( $constname, @_ ? $_[0] : 0 );
-    if( $! != 0 ) {
-	if( $! =~ /Invalid/ ) {
-            $val = constant_SV( $constname, @_ ? $_[0] : 0 );
-            if( $! ne "" ) {
-                croak( "Your vendor has not defined Authen::Libwrap macro $constname" );
-            } else {
-                eval "sub $AUTOLOAD { '$val' }";
-                goto &$AUTOLOAD;
-            }
-        } else {
-            croak( "Your vendor has not defined Authen::Libwrap macro $constname" );
-        }
-    } else {
-        eval "sub $AUTOLOAD { $val }";
-        goto &$AUTOLOAD;
-    }
-}
-
-
-$DEBUG = 0;
-
-# keep require happy
-1;
-
-
-__END__
-
-
 =head1 NAME
 
 Authen::Libwrap - access to Wietse Venema's TCP Wrappers library
@@ -93,7 +38,6 @@ the function.
 use_ok('Authen::Libwrap');
 Authen::Libwrap->import( qw|hosts_ctl STRING_UNKNOWN| );
 ok( defined(&hosts_ctl), "'hosts_ctl' function is exported");
-Authen::Libwrap::STRING_UNKNOWN();        # to make AUTOLOAD generate it
 ok( defined(&STRING_UNKNOWN), "'STRING_UNKNOWN' constant is exported");
 
 my $daemon = "tcp_wrappers_test";
@@ -106,11 +50,85 @@ is( $result, 1, 'access is granted');
 
 =end testing
 
+=cut
+
+package Authen::Libwrap;
+
+use strict;
+use vars qw($VERSION @ISA @EXPORT_OK $DEBUG);
+
+use constant STRING_UNKNOWN => "unknown";
+
+use XSLoader;
+use Exporter;
+use Carp                qw|croak|;
+
+@ISA = 'Exporter';
+
+# set up our exports
+@EXPORT_OK = qw(
+	hosts_ctl
+	STRING_UNKNOWN
+);
+my %EXPORT_TAGS = (
+    functions => [ qw|hosts_ctl| ],
+    constants => [ qw|STRING_UNKNOWN| ],
+);
+{
+    my %seen;
+    push @{$EXPORT_TAGS{all}},
+    grep {!$seen{$_}++} @{$EXPORT_TAGS{$_}} foreach keys %EXPORT_TAGS;
+}
+Exporter::export_ok_tags('all');
+
+$VERSION = 0.11;
+
+# pull in the XS parts
+XSLoader::load 'Authen::Libwrap', $VERSION;
+
+# set this to a true value to enable C-level debugging
+$DEBUG = 0;
+
+# keep require happy
+1;
+
+
+__END__
+
+
+=head1 FUNCTIONS
+
+Authen::Libwrap has only one function, though it can be invoked
+in several ways:
+
+=head2 hosts_ctl($daemon, $hostname, $ip_addr, $user)
+
+
 =head1 EXPORTS
 
-  Nothing unless you ask for it.
+Nothing unless you ask for it.
 
-  hosts_ctl( $daemon, $hostname, $ip_address, $username );
+hosts_ctl optionally
+
+STRING_UNKNOWN optionally
+
+=head1 EXPORT_TAGS
+
+=over 4
+
+=item * B<functions>
+
+hosts_ctl
+
+=item * B<constants>
+
+STRING_UNKNOWN
+
+=item * B<all>
+
+everything the module has to offer.
+
+=back
 
 =head1 CONSTANTS
 
