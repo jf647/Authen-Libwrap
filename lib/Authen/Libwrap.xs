@@ -1,5 +1,5 @@
 /*
- * $Id$
+ * $Id: Libwrap.xs,v 1.3 2003/12/17 03:40:23 james Exp $
  */
 
 #include "EXTERN.h"
@@ -21,13 +21,7 @@ _hosts_ctl(daemon, client_name, client_addr, client_user)
 	char *client_addr
 	char *client_user
     CODE:
-        {
-            if( SvTRUE( get_sv( "Authen::Libwrap::DEBUG", FALSE) ) ) {
-                PerlIO_printf(PerlIO_stderr(), "hosts_ctl: %s, %s, %s, %s\n",
-                              daemon, client_name, client_addr, client_user);
-            }
-            RETVAL = hosts_ctl(daemon, client_name, client_addr, client_user);
-        }
+        RETVAL = hosts_ctl(daemon, client_name, client_addr, client_user);
     OUTPUT:
         RETVAL
     POSTCALL:

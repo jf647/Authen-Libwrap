@@ -7,5 +7,7 @@ Makefile.PL
 MANIFEST
 README
 t/01_inline.t
-t/02_pod.t
+t/02_maintainer.t
+t/03_pod.t
+t/hosts.allow
 META.yml                                 Module meta-data (added by MakeMaker)
