@@ -5,10 +5,10 @@ example.pl
 inc/Devel/PPPort.pm
 lib/Authen/Libwrap.pm
 lib/Authen/Libwrap.xs
-lib/Authen/ppport.h
 Makefile.PL
 MANIFEST			This list of files
 META.yml
+ppport.h
 README
 t/01_inline.t
 t/02_maintainer.t

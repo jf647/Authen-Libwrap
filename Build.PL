@@ -70,7 +70,7 @@ unless( $lib_dir ) {
 # create ppport.h
 use lib 'inc';
 use Devel::PPPort;
-Devel::PPPort::WriteFile( File::Spec->catfile(qw|lib Authen ppport.h|) );
+Devel::PPPort::WriteFile();
 
 # create the Buildfile
 Module::Build->new(
