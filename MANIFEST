@@ -1,7 +1,8 @@
+Build.PL
 Changes
 example.pl
 lib/Authen/Libwrap.pm
-Libwrap.xs
+lib/Authen/Libwrap.xs
 Makefile.PL
 MANIFEST
 README
