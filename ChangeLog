@@ -1,10 +1,15 @@
 Revision history for Perl extension Authen::Libwrap.
 
+0.10.1  Mon Dec 15 2003
+        - re-org directories to fit current CPAN standards
+        - minor pod fixup
+        - move test suite inline and use Test::More functionality
+
 0.10    Tue Feb 13 2001
         - Three years and *still* nobody wrote something like this ? 
-        - Cleaned up a bit, verified on FreeBSD 4.x
-	- renamed from TCP_Wrappers to Authen::Libwrap in prep for
-	distribution on CPAN
+        - Cleaned up a bit, verified on FreeBSD 4.
+        - renamed from TCP_Wrappers to Authen::Libwrap in prep for
+	      distribution on CPAN
 
 [...]   History unknown.  Module never received much fedback, so it wasn't
         uploaded to CPAN.

@@ -4,6 +4,7 @@ Verified to work on:
 	HP-UX 10.20 with libwrap 7.6
 	HP-UX 11.0 with libwrap 7.6
 	FreeBSD 4.x with libwrap 7.6
+    FreeBSD 5.1
 
 You must have compiled and installed the TCP Wrappers package.  The home
 page for TCP Wrappers is ftp://ftp.porcupine.org/pub/security/index.html.

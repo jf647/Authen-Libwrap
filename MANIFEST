@@ -1,8 +1,8 @@
 Changes
+example.pl
+lib/Authen/Libwrap.pm
+Libwrap.xs
+Makefile.PL
 MANIFEST
 README
-Makefile.PL
-Libwrap.pm
-Libwrap.xs
-test.pl
-example.pl
+t/01_basic.t
