@@ -395,6 +395,12 @@ L<ftp://ftp.porcupine.org/pub/security/index.html>.
 =head1 AUTHOR
 
 James FitzGibbon, E<lt>jfitz@CPAN.orgE<gt>
+=head1 COPYRIGHT
+
+Copyright (c) 1998,2001,2003 James FitzGibbon.  All Rights Reserved.
+
+This module is free software; you may use it under the same terms as Perl
+itself.
 
 =cut
 
