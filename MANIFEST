@@ -1,5 +1,6 @@
 Build.PL
 ChangeLog
+ChangeLog.xml
 example.pl
 lib/Authen/Libwrap.pm
 lib/Authen/Libwrap.xs
