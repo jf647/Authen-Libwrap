@@ -1,5 +1,5 @@
 #
-# $Id: Build.PL,v 1.2 2003/12/17 02:04:13 james Exp $
+# $Id$
 #
 
 use strict;
