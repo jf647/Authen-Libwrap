@@ -25,7 +25,9 @@ BEGIN {
             $digest->hexdigest eq '8bc3fb6dcb07f81c85a213a475b2f3f5'
         );
     };
-    exit if $@;
+    if( $@ ) {
+        use Test::More skip_all => 'maintainer tests';
+    }
 }
 
 use Test::More tests => 14;
