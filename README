@@ -1,56 +1,61 @@
-This is the Authen::Libwrap XSUB for Perl5, version 0.10.
+NAME
+    Authen::Libwrap - access to Wietse Venema's TCP Wrappers library
 
-Verified to work on:
-	HP-UX 10.20 with libwrap 7.6
-	HP-UX 11.0 with libwrap 7.6
-	FreeBSD 4.x with libwrap 7.6
-    FreeBSD 5.1
+SYNOPSIS
+      use Authen::Libwrap qw( hosts_ctl STRING_UNKNOWN );
 
-You must have compiled and installed the TCP Wrappers package.  The home
-page for TCP Wrappers is ftp://ftp.porcupine.org/pub/security/index.html.
+      # we know the remote username (using identd)
+      $rc = hosts_ctl(      "programname",
+                            "hostname.domain.com",
+                            "10.1.1.1",
+                            "username" );
+      );
+      print "Access is ", $rc ? "granted" : "refused", "\n";
 
-You should compile libwrap to position-indenpendant code (PIC).  On gcc,
-add the '-fpic' switch to CFLAGS.  On HP-UX, add '+z' (you'll need the
-optional Ansi C compiler to do that though).
+      # we don't know the remote username
+      $rc = hosts_ctl(      "programname",
+                            "hostname.domain.com",
+                            "10.1.1.1",
+                            STRING_UNKNOWN );
+      );
+      print "Access is ", $rc ? "granted" : "refused", "\n";
 
-Makefile.PL is functional, but rather sparse.  Briefly:
+DESCRIPTION
+    The Authen::Libwrap module allows you to access the hosts_ctl() function
+    from the popular TCP Wrappers security package. This allows validation
+    of network access from perl programs against the system-wide hosts.allow
+    file.
 
-- Edit Makefile.PL to reflect the locations of libwrap.a and tcpd.h (LIBS and
-INCS - mine are set to /usr/local/{lib,include} respectively.)
-- Run 'perl Makefile.PL'
-- Run 'make'
-- Run 'make install'
+    If any of the parameters to hosts_ctl() are not known (i.e. username due
+    to lack of an identd server), the constant STRING_UNKNOWN should be
+    passed to the function.
 
-Report any problems or bugs to James FitzGibbon <james@ehlo.com>.  If
-everything works perfectly, please send me the output of 'perl -V' so that I
-can add it to the list of verified systems.
+EXPORTS
+      Nothing unless you ask for it.
 
+      hosts_ctl( $daemon, $hostname, $ip_address, $username );
 
-GOTCHAS
--------
-Calls to hosts_ctl that match hosts.allow entries like this:
+CONSTANTS
+      STRING_UNKNOWN
 
-# The rest of the daemons are protected. Backfinger and log by email.
-ALL : ALL \
-	: severity auth.info : spawn (/usr/bin/finger -l @%h | \
-	 /usr/bin/mail -s "tcpd\: %u@%h[%a] tried to use %d  (denied)" root ) & \
-	: twist /bin/echo "You are not welcome here."
+BUGS
+    Calls to hosts_ctl() which match a line in hosts.allow that uses the
+    "twist" option will terminate the running perl program. This is not a
+    bug in Authen::Libwrap per se -- libwrap uses exec(3) to replace the
+    running process with the specified program, so there's nothing to return
+    to.
 
-will terminate the running perl program. This is not a bug in
-Authen::Libwrap per se -- libwrap uses exec(3) to replace the running
-process with the specified program, so there's nothing to return to.  A C
-program linked against libwrap does the same thing.
+    Some operating systems ship with a default catch-all rule in hosts.allow
+    that uses the twist option. You may have to modify this configuration to
+    use Authen::Libwrap effectively.
 
-FreeBSD ships with a suggestedcatch-all rule like the one above; you may
-consider using "spawn" instead of "twist" to get around this problem.
+SEE ALSO
+    Authen::Tcpdmatch, a Pure Perl module that can parse hosts.allow and
+    hosts.deny if you don't need all the underlying features of libwrap.
 
+AUTHOR
+    James FitzGibbon, <james@ehlo.com>
 
-TODO
-----
+SEE ALSO
+    hosts_access(3), hosts_access(5), hosts_options(5)
 
-- Provide interface to hosts_access and request_* functions to allow alternate
-parameter passing (i.e. a IO::Socket::INET object instead of the literal
-Hostname and IP address)
-
--- 
-j.
