@@ -1,0 +1,21 @@
+Revision history for Perl extension Authen::Libwrap.
+
+0.10    Tue Feb 13 2001
+        - Three years and *still* nobody wrote something like this ? 
+        - Cleaned up a bit, verified on FreeBSD 4.x
+	- renamed from TCP_Wrappers to Authen::Libwrap in prep for
+	distribution on CPAN
+
+[...]   History unknown.  Module never received much fedback, so it wasn't
+        uploaded to CPAN.
+
+0.003   Fri Apr 3 1998
+	- Released to a few interested parties from comp.lang.perl.modules
+
+0.002	Wed Apr 1 1998
+	- I couldn't quite bring myself to release this on April Fool's day
+	(as appropriate as it may have been)
+
+0.001	Mon Mar 27 1998
+	- Damn! It compiles (and seems to work to boot!)
+

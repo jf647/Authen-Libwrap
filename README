@@ -1,0 +1,55 @@
+This is the Authen::Libwrap XSUB for Perl5, version 0.10.
+
+Verified to work on:
+	HP-UX 10.20 with libwrap 7.6
+	HP-UX 11.0 with libwrap 7.6
+	FreeBSD 4.x with libwrap 7.6
+
+You must have compiled and installed the TCP Wrappers package.  The home
+page for TCP Wrappers is ftp://ftp.porcupine.org/pub/security/index.html.
+
+You should compile libwrap to position-indenpendant code (PIC).  On gcc,
+add the '-fpic' switch to CFLAGS.  On HP-UX, add '+z' (you'll need the
+optional Ansi C compiler to do that though).
+
+Makefile.PL is functional, but rather sparse.  Briefly:
+
+- Edit Makefile.PL to reflect the locations of libwrap.a and tcpd.h (LIBS and
+INCS - mine are set to /usr/local/{lib,include} respectively.)
+- Run 'perl Makefile.PL'
+- Run 'make'
+- Run 'make install'
+
+Report any problems or bugs to James FitzGibbon <james@ehlo.com>.  If
+everything works perfectly, please send me the output of 'perl -V' so that I
+can add it to the list of verified systems.
+
+
+GOTCHAS
+-------
+Calls to hosts_ctl that match hosts.allow entries like this:
+
+# The rest of the daemons are protected. Backfinger and log by email.
+ALL : ALL \
+	: severity auth.info : spawn (/usr/bin/finger -l @%h | \
+	 /usr/bin/mail -s "tcpd\: %u@%h[%a] tried to use %d  (denied)" root ) & \
+	: twist /bin/echo "You are not welcome here."
+
+will terminate the running perl program. This is not a bug in
+Authen::Libwrap per se -- libwrap uses exec(3) to replace the running
+process with the specified program, so there's nothing to return to.  A C
+program linked against libwrap does the same thing.
+
+FreeBSD ships with a suggestedcatch-all rule like the one above; you may
+consider using "spawn" instead of "twist" to get around this problem.
+
+
+TODO
+----
+
+- Provide interface to hosts_access and request_* functions to allow alternate
+parameter passing (i.e. a IO::Socket::INET object instead of the literal
+Hostname and IP address)
+
+-- 
+j.
