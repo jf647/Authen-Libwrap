@@ -2,14 +2,15 @@ Build.PL
 ChangeLog
 ChangeLog.xml
 example.pl
+inc/Devel/PPPort.pm
 lib/Authen/Libwrap.pm
 lib/Authen/Libwrap.xs
+lib/Authen/ppport.h
 Makefile.PL
-MANIFEST
+MANIFEST			This list of files
+META.yml
 README
 t/01_inline.t
 t/02_maintainer.t
 t/03_pod.t
 t/hosts.allow
-META.yml                                 Module meta-data (added by MakeMaker)
-ppport.h

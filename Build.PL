@@ -1,5 +1,5 @@
 #
-# $Id: Build.PL,v 1.2 2003/12/17 02:04:13 james Exp $
+# $Id$
 #
 
 use strict;
@@ -67,12 +67,17 @@ unless( $lib_dir ) {
     );
 }
 
+# create ppport.h
+use lib 'inc';
+use Devel::PPPort;
+Devel::PPPort::WriteFile( File::Spec->catfile(qw|lib Authen ppport.h|) );
+
 # create the Buildfile
 Module::Build->new(
 
     module_name          => 'Authen::Libwrap',
 
-    dist_version         => '0.20',
+    dist_version_from    => 'lib/Authen/Libwrap.pm',
 
     license              => 'perl',
     

@@ -1,5 +1,5 @@
 /*
- * $Id: Libwrap.xs,v 1.3 2003/12/17 03:40:23 james Exp $
+ * $Id$
  */
 
 #include "EXTERN.h"
@@ -28,5 +28,3 @@ _hosts_ctl(daemon, client_name, client_addr, client_user)
         if( 0 == RETVAL ) {
             XSRETURN_UNDEF;
         }
-
-/* EOF */

@@ -1,17 +1,19 @@
 --- #YAML:1.0
 name: Authen-Libwrap
-version: 0.20
+version: 0.21
+author:
+  - |-
+    James FitzGibbon, E<lt>jfitz@CPAN.orgE<gt>
+    =head1 COPYRIGHT
+abstract: access to Wietse Venema's TCP Wrappers library
 license: perl
-distribution_type: module
 requires:
   Scalar::Util: 0
-recommends: {}
 build_requires:
   Test::Exception: 0
   Test::More: 0
-conflicts: {}
 provides:
   Authen::Libwrap:
     file: lib/Authen/Libwrap.pm
-    version: 0.2
-generated_by: Module::Build version 0.21
+    version: 0.21
+generated_by: Module::Build version 0.25_02

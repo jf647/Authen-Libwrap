@@ -1,3 +1,9 @@
+
+    Working towards v0.21
+
+    Use Devel::PPPort to generate ppport.h for compatibility with
+    older versions of perl.
+
 2003-12-17 20:56  james
 
 	* t/02_maintainer.t (1.2, v0_20):

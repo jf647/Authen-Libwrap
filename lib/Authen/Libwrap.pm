@@ -195,7 +195,7 @@ use Socket;
 }
 Exporter::export_ok_tags('all');
 
-$VERSION = 0.20;
+$VERSION = 0.21;
 
 # pull in the XS parts
 XSLoader::load 'Authen::Libwrap', $VERSION;
